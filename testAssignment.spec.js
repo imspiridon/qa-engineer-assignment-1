@@ -3,19 +3,6 @@ const request = require('supertest')('https://petstore.swagger.io/v2');
 const expect = require('chai').expect;
 
 describe('First test', () => {
-    // it('Can find pet by status', () => {
-    //     request(baseUrl)
-    //         .get('/pet/findByStatus?status=available')
-    //         .expect(200)
-    //         .expect('Content-Type', /text\/html/)
-    //         .expect(res.body)
-    //         .end(function(err, res) {
-    //             if (err) throw err;
-    //             console.log(res.body)
-
-    //         })
-    // })
-
     it('/GET Can find pets by status', async () => {
         // Verifies that searching pets by status returns correct status code and is not empty
         const response = await request
