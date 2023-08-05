@@ -1,4 +1,3 @@
-const { BigInteger } = require('bignumber');
 const request = require('supertest')('https://petstore.swagger.io/v2');
 const expect = require('chai').expect;
 
@@ -18,6 +17,7 @@ describe('First test', () => {
         const response = await request
             .get(`/pet/${petId}`);
         
+        expect(response.status).to.equal(200);
         expect(response.body).to.have.property('name').equals('doggie');
         expect(response.body).to.have.nested.property('category.name').equals('sheru');
         expect(response.body).to.have.nested.property('tags[0].name').equals('sheru');
