@@ -1,25 +1,41 @@
 const request = require('supertest')('https://petstore.swagger.io/v2');
-const chai = require('chai'), expect = chai.expect, assert = chai.assert;
-chai.use(require('chai-like'));
-chai.use(require('chai-things'));
+const chai = require('chai'), expect = chai.expect;
 
-describe('First test', () => {
-    it('/GET Can search pets by status', async () => {
+describe('Swagger petsore API test automation assignment', () => {
+    it('Can search pets by status available', async () => {
         // Verifies that searching pets by status 'available' returns correct status code and it is not empty
         
         // Perform GET request
-        const response = await request
+        const findByStatus = await request
             .get('/pet/findByStatus?status=available');
 
         // Assert that status code is 200
-        expect(response.status).to.equal(200);
-        // Assert that response is not empty
-        expect(response.body).to.be.not.empty;
+        expect(findByStatus.status).to.equal(200);
+        // Assert that response is not empty and has the main properties
+        expect(findByStatus.body).to.be.not.empty;
+        expect(findByStatus.body[0]).to.have.property("id");
+        expect(findByStatus.body[0]).to.have.property("name");
+        expect(findByStatus.body[0]).to.have.property("tags");
+
+        // // Retrieve ID of the the first pet from findByStatus.body
+        // const petId = findByStatus.body[0]['id']
+        // console.log(petId)
+
+        // // New get request
+        // const findById = await request
+        //     .get(`/pet/${petId}`);
+    
+        // // Assert that status is 200
+        // expect(findById.status).to.equal(200);
+        // // Assert that response body contains an object with name that is equal to findByStatus.body[0]['name']
+        // expect(findById.body).to.have.property('name').equals(findByStatus.body[0]['name']);
+        // // Assert that response body contains an object with category name that is equal to findByStatus.body[0]['category']['name']
+        // expect(findById.body).to.have.nested.property('category.name').equals(findByStatus.body[0]['category']['name']);
     });
         
     it('/GET Can find pets by ID', async () => {
         // Verifies that searching pets by ID returns correct results (checks response properties: name, category name, first tag name)
-        // Assign existing pet IT to variable
+        // Assign existing pet ID to variable
         const petId = 101;
 
         // Perform GET request
@@ -34,12 +50,12 @@ describe('First test', () => {
         expect(response.body).to.have.nested.property('category.name').equals('sheru');
     });
 
-    it('/POST Can add new pet to store', async () => {
+    it('Can add new pet to store and search new pet by its ID', async () => {
         // Get timestamp to generate unique pet ID
         const newPetId = new Date().valueOf();
         
         // Perform POST request
-        const response = await request
+        const addNewPet = await request
             .post('/pet/')
             .send({
                 "id": newPetId,
@@ -51,16 +67,16 @@ describe('First test', () => {
             });
             
             // Assert that response has status '200' 
-            expect(response.status).to.equal(200);
+            expect(addNewPet.status).to.equal(200);
            
-            // Assert that the newly created pet exists (search by newPetId)
-            const getResponse = await request
+            // Assert that the newly created pet has been successfully added (search by newPetId)
+            const getPet = await request
                 .get(`/pet/${newPetId}`)
-            expect(getResponse.status).to.equal(200);
-            expect(getResponse.body).to.have.property('id').equals(newPetId);
+            expect(getPet.status).to.equal(200);
+            expect(getPet.body).to.have.property('id').equals(newPetId);
     });
 
-    it('/ GET /POST /PUT Can find available pet "Pupo" with category name “pajaro” and place order', async () => {
+    it('Can find available pet "Pupo" with category name “pajaro” and place order', async () => {
         // Exercise from minimum requirements, find available pets with name "pupo" and category name "pajaro" and place order for it
         // Perform GET request for available pets
         const response = await request
@@ -104,6 +120,7 @@ describe('First test', () => {
                 "status": "placed",
                 "complete": true
             });
+            // Expect status 200
             expect(placeOrder.status).to.equal(200);
             
             // Assign order ID to variable to check that order exists
@@ -118,7 +135,7 @@ describe('First test', () => {
             expect(checkOrderById.body).to.have.property('petId').equals(returnedPets[0]['id']);
     });
 
-    it.only('Store owner can update the pet information of pets named “kurikuri” under category “pomeranian” to add the tag “Super Cute”', async () => {
+    it('Store owner can update the pet information of pets named “kurikuri” under category “pomeranian” to add the tag “Super Cute”', async () => {
         // Create new pet named “kurikuri” under category “Pomeranian”
         const newPetId = new Date().valueOf();
         const newPet = await request
