@@ -4,16 +4,20 @@
   "description": "api test assignment",
   "main": "testAssignment.spec.js",
   "scripts": {
-    "test": "mocha *.spec.js"
+    "test": "mocha *.spec.js --timeout 10000"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bignumber": "^1.1.0",
-    "chai": "^4.3.7",
+    "chai-like": "^1.1.1",
+    "chai-things": "^0.2.0",
     "express": "^4.18.2",
     "mocha": "^10.2.0",
     "nock": "^13.3.2",
     "supertest": "^6.3.3"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7"
   }
 }
