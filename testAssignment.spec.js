@@ -1,10 +1,8 @@
-const findPetsByNameAndCategoryName = require('helpers');
 const request = require('supertest')('https://petstore.swagger.io/v2');
 const chai = require('chai'), expect = chai.expect;
 
 describe('Swagger petsore API test automation assignment', () => {
     it('Can search pets by status "available"', async () => {
-        // Test cases covered: 
         // Verifies that searching pets by status 'available' returns correct status code and it is not empty
         
         // Perform GET request
@@ -20,9 +18,10 @@ describe('Swagger petsore API test automation assignment', () => {
         expect(findByStatus.body[0]).to.have.property("tags");
     });
 
-    it('Can add new pet to store and search new pet by its id', async () => {
-        // Test cases covered: 
-        // Get timestamp to generate unique pet ID for testing
+    it('Can add new pet to store and search new pet by its ID', async () => {
+        // Verifies that is is possible ot add a new pet and search it by its id
+
+        // Get timestamp to generate unique pet ID
         const newPetId = new Date().valueOf();
         
         // Perform POST request
@@ -47,18 +46,38 @@ describe('Swagger petsore API test automation assignment', () => {
             expect(getPet.body).to.have.property('id').equals(newPetId);
     });
 
-    it.only('Can find available pet "Pupo" with category name “pajaro” and place order', async () => {
-        // Test cases covered: 
+    it('Can find available pet "Pupo" with category name “pajaro” and place order', async () => {
         // Exercise from minimum requirements, find available pets with name "pupo" and category name "pajaro" and place order for it
         // Perform GET request for available pets
-        const findByStatus = await request
+        const response = await request
             .get('/pet/findByStatus?status=available');
 
         // Assert that status is 200
-        expect(findByStatus.status).to.equal(200);
+        expect(response.status).to.equal(200);
         
-        // Use function from helpers.js to check attributes for pet name and category name
-        const returnedPets = findPetsByNameAndCategoryName(findByStatus, 'pupo', 'pajaro');
+        // Declare function to check if pets with certain pet name and category name exist, if exists, it returns an array with matching pets
+        // if there are no matching pets, it returns an error
+        const findPetsByNameAndCategoryName = function (name, categoryName) {
+            pets = []
+            for (let i = 0; i < response.body.length; i++) {
+                if (response.body[i]['name'] == name && response.body[i]['category']['name'] == categoryName) {
+                    pets.push(response.body[i])
+                }
+                else {
+                    continue
+                }
+            }
+            if (pets.length < 1) {
+                throw new Error(`No pets found with the name "${name}" and category name "${categoryName}"`)
+            }
+            else {
+                return pets;
+            }
+            
+        };
+        
+        // Use function above and pass attributes for pet name and category name
+        const returnedPets = findPetsByNameAndCategoryName('pupo', 'pajaro');
 
         // Send POST request with order details for the first pet with the name 'pupo' and catagory name 'pajaro'
         const placeOrder = await request
@@ -86,8 +105,7 @@ describe('Swagger petsore API test automation assignment', () => {
             expect(checkOrderById.body).to.have.property('petId').equals(returnedPets[0]['id']);
     });
 
-    it('Store owner can update information of pets named “kurikuri” under category “pomeranian” to add tag “Super Cute”', async () => {
-        // Test cases covered: 
+    it('Store owner can update the pet information of pets named “kurikuri” under category “pomeranian” to add the tag “Super Cute”', async () => {
         // Create new pet named “kurikuri” under category “Pomeranian”
         const newPetId = new Date().valueOf();
         const newPet = await request
@@ -106,7 +124,7 @@ describe('Swagger petsore API test automation assignment', () => {
 
         // PUT request to update the pet named “kurikuri” under category “pomeranian” to add the tag “Super Cute”
         const updatePet = await request
-            .put('/pet/')
+            .put(/pet/)
             .send({
                 "id": 0,
                 "category": {
@@ -142,12 +160,12 @@ describe('Swagger petsore API test automation assignment', () => {
             var isPetUpdated = false;
             for (let i = 0; i < findPetByTags.body.length; i++) {
                 if (findPetByTags.body[i]['id'] == updatedPetId) {
-                    // console.log('Found pet id: ' + findPetByTags.body[i]['id'])
+                    // console.log('Found pet id: ' + findPetByTags.body[i])
                     isPetUpdated = true;
                     return isPetUpdated;
                 }
                 else {
-                    // console.log('Cannot find pet id: ' + findPetByTags.body[i]['id'])
+                    // console.log('Cannot find pet id: ' + findPetByTags.body[i])
                     isPetUpdated = false;
                 };
             };
