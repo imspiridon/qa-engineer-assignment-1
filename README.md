@@ -1,6 +1,9 @@
 # QA Engineer Assignment
 
 ## Exercise 1
+```
+Design test cases for the Comment feature, including delete and report comment flows, in the Item Details screen of the Mercari app. Specify whether you will use a manual or automated approach for each test, and provide reasons for your decisions. Refer to the Comment & Delete/Report feature flow diagrams provided below.
+```
 [Link to test cases on Google Doc](https://docs.google.com/spreadsheets/d/1500qmNgRwmF4AayPBkuzGvvT5j3WWExa759CLlv-oQM/edit#gid=0&range=A1)
 
 ## Exercise 2
