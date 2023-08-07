@@ -26,7 +26,8 @@ The test design will be submitted together with the code.
 ```
 Implement the tests designed in Exercise 2 - Scenario 1
 ● Please assume that the API is an actual Pet Store API. 
-● The candidate can use any programming language. However, extra credit will be given if Typescript is used. ● Submit your code on either Github or Google Drive 
+● The candidate can use any programming language. However, extra credit will be given if Typescript is used.
+● Submit your code on either Github or Google Drive 
 
 Minimum Scenarios to be implemented 
 1. Buyer can check available pets named “pupo” with category name “pajaro” and place an order for a pet 
