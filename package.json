@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha *.spec.js --timeout 10000"
   },
-  "author": "",
+  "author": "imspiridon",
   "license": "ISC",
   "dependencies": {
     "bignumber": "^1.1.0",
@@ -19,5 +19,13 @@
   },
   "devDependencies": {
     "chai": "^4.3.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imspiridon/qa-engineer-assignment-1.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imspiridon/qa-engineer-assignment-1/issues"
+  },
+  "homepage": "https://github.com/imspiridon/qa-engineer-assignment-1#readme"
 }
