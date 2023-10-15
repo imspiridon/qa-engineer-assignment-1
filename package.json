@@ -18,7 +18,8 @@
     "supertest": "^6.3.3"
   },
   "devDependencies": {
-    "chai": "^4.3.7"
+    "chai": "^4.3.7",
+    "cypress": "^13.3.1"
   },
   "repository": {
     "type": "git",
